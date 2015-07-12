@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'static_pages#main'
+  post 'static_pages#main', to: 'links#create'
   get '/about', to: 'static_pages#about'
 
   # The priority is based upon order of creation: first created -> highest priority.
