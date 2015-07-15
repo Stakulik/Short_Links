@@ -1,14 +1,19 @@
 require 'rails_helper'
 
-describe 'StaticPages' do
+describe "static_pages/main" do
 
   it 'has a greeting on the main page' do
-    render :template => "static_pages/main.html.haml"
-    expect(response).to have_content('Hello,')
+    assign(:link, Link.new)
+    render
+    expect(rendered).to have_content("Hello")
   end
 
+end
+
+describe "static_pages/about" do
+
   it 'has a header on the about page' do
-    render :template => "static_pages/about.html.haml"
+    render
     expect(response).to have_content('About project')
   end
 
