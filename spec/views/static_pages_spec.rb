@@ -9,12 +9,3 @@ describe "static_pages/main" do
   end
 
 end
-
-describe "static_pages/about" do
-
-  it 'has a header on the about page' do
-    render
-    expect(response).to have_content('About project')
-  end
-
-end

@@ -1,14 +1,15 @@
 %h1 Hello, world!
 
-- if $alias_link.nil?
-  = form_for @link, url: { action: "main" } do |f|
-    = f.text_field :original_link
-    = f.submit "Сократить"
-
-- unless $alias_link.nil?
-  alias link:
-  = $alias_link
-
-  %br   
+- if flash["success"]
+  Ваша ссылка:
+  = flash[:success]
+  %br
   %br
   = link_to "Create a new short link", root_path
+- elsif flash["error"]
+  = flash[:error]
+  %br
+  %br
+  = render 'links/form_link'
+- else
+  = render 'links/form_link'

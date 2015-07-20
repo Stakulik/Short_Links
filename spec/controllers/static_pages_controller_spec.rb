@@ -7,10 +7,5 @@ describe StaticPagesController do
     expect(response).to render_template :main
   end
 
-  it 'GET #about' do
-    get :about
-    expect(response).to render_template :about
-  end
-
 end
 
