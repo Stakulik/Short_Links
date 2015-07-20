@@ -1,15 +1,21 @@
-%h1 Hello, world!
+.container
+  .row
+    .col-md-12.header-container
+      = link_to "Shorter", root_path, :class => "header-link"
+      На этой странице Вы можете сделать из длинной и сложной ссылки простую.
+      %br
+      Ссылка будет действительна в течение 7 дней после последнего визита.
 
-- if flash["success"]
-  Ваша ссылка:
-  = flash[:success]
-  %br
-  %br
-  = link_to "Create a new short link", root_path
-- elsif flash["error"]
-  = flash[:error]
-  %br
-  %br
-  = render 'links/form_link'
-- else
-  = render 'links/form_link'
+    .col-md-12.main-block
+      - if flash["success"]
+        .alert.alert-success{ :role => "alert" }
+          Ваша ссылка:
+          %span.your-alias
+            = flash[:success]
+        = render 'links/form_link'
+      - elsif flash["error"]
+        .alert.alert-warning{ :role => "alert" }
+          = flash[:error]
+        = render 'links/form_link'
+      - else
+        = render 'links/form_link'
