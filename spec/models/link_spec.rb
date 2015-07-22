@@ -8,7 +8,7 @@ describe Link, type: :model do
     expect(link.errors[:original_link]).to include("can't be blank")
   end
 
-  it "doesn't save link with a non-unique alias_link parameter" do
+  it "doesn't save a link with a non-unique alias_link parameter" do
     Link.create(
       original_link: 'mail.ru',
       alias_link: 'OLOLO'
