@@ -16,5 +16,6 @@
 /tmp
 
 # Ignore Capistrano server settings
-/config
+config/deploy/
+/config/deploy.rb
 Capfile

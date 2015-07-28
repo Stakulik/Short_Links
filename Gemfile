@@ -45,10 +45,10 @@ group :development, :test do
   gem 'rspec-rails', '3.3.2'
 end
 
-#group :development do
-#  gem 'capistrano',  '~> 3.4.0'
-#  gem 'capistrano-rails', '~> 1.1.3'
-#end
+group :development do
+  gem 'capistrano',  '~> 3.4.0'
+  gem 'capistrano-rails', '~> 1.1.3'
+end
 
 group :test do
   gem 'capybara', '2.4.4'
