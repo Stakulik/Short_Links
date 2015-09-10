@@ -42,14 +42,12 @@ gem 'haml-rails', '0.9.0'
 gem 'bootstrap-sass', '~> 3.3.5'
 
 group :development, :test do
-  gem 'rspec-rails', '3.3.2'
+  gem 'rspec-rails', '~> 3.3.3'
+  gem 'capybara', '~> 2.5.0'
+  gem 'factory_girl_rails', '4.5.0'
 end
 
 group :development do
   gem 'capistrano',  '~> 3.4.0'
   gem 'capistrano-rails', '~> 1.1.3'
-end
-
-group :test do
-  gem 'capybara', '2.4.4'
 end

@@ -17,7 +17,7 @@ class LinksController < ApplicationController
       redirect_to @link.original_link
     elsif params[:alias_link].size == 5
       flash[:error] = "Данная ссылка не существует или была удалена."
-      redirect_to root_path    
+      redirect_to root_path   
     else
       redirect_to root_path
     end

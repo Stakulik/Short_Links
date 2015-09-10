@@ -29,9 +29,9 @@ describe "Links creation", :type => :request do
   end
 
   it "follows a short link and gets an original url" do
-    link = Link.create(
-      :original_link => "http://rubylearning.com/satishtalim/ruby_regular_expressions.html",
-      :alias_link => "RuoRa" )
+    link = create(:link,
+            :original_link => "http://rubylearning.com/satishtalim/ruby_regular_expressions.html",
+            :alias_link => "RuoRa" )
 
     get '/RuoRa' 
     expect(response).to redirect_to link.original_link

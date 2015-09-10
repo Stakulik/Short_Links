@@ -19,12 +19,9 @@ describe LinksController, :type => :controller do
 
   describe 'GET router' do
     it "redirects to an original link" do
-      Link.create(
-        original_link: "http://google.ru",
-        alias_link: "GOGLE"
-      )
+      create(:link)
 
-      expect( get :router, :alias_link => "GOGLE" ).to redirect_to("http://google.ru")
+      expect( get :router, :alias_link => "YANDX" ).to redirect_to("http://www.yandex.ru/")
     end
 
     it "shows 'Данная ссылка не существует' while a required alias_link does not exist and has length = 5 symbols" do

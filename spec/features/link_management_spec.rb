@@ -1,7 +1,7 @@
 require "rails_helper"
 
-
 describe "Link management", :type => :feature do
+
   scenario "User creates a new short link" do
     visit '/'
 
@@ -20,14 +20,11 @@ describe "Link management", :type => :feature do
     expect(page).to have_text("Указана некорректная ссылка.")
   end
 
-  it "[FIX]User is redirected to an original link when required an alias link" do
-    link = Link.create(
-      :original_link => 'https://mail.ru/',
-      :alias_link => 'OPOPO'
-    )
-    
-    visit '/OPOPO'
-#    expect(current_path).to eq 'https://mail.ru/'
+  scenario "[FIX]User is redirected to an original link when required an alias link" do
+    create(:link)
+
+    visit 'YANDX'
+    # expect(current_path).to eq 'http://www.yandex.ru/'
   end
 
   scenario "User is redirected to the main page while an alias link has length = 5 symbols" do
