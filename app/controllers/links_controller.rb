@@ -3,7 +3,7 @@ class LinksController < ApplicationController
   def create
     @link = Link.new(link_params)
 
-    if @link.save
+    if @link.valid_url? && @link.save
       flash[:success] = "#{request.host}/#{@link.alias_link}"
       redirect_to root_path
     else
@@ -14,6 +14,7 @@ class LinksController < ApplicationController
 
   def router
     if @link = Link.find_by_alias_link(params[:alias_link])
+      @link.save if @link.update_destroy_date
       redirect_to @link.original_link
     elsif params[:alias_link].size == 5
       flash[:error] = "Данная ссылка не существует или была удалена."

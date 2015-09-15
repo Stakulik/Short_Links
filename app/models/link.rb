@@ -1,15 +1,23 @@
 class Link < ActiveRecord::Base
-  validates :original_link, :alias_link, presence: true
+  validates :original_link, presence: true
   validates :alias_link, uniqueness: true
 
-  after_initialize :add_protocol_and_alias
+  before_create :add_Protocol_Alias
+
+  def valid_url?
+    /\A(.*)([a-z0-9а-я]+)\.([a-zа-я]{2,})(\/.*)?\z/i =~ original_link
+  end
+
+  def update_destroy_date
+    self.destroy_at = 7.days.from_now
+  end
 
   private
 
-  def add_protocol_and_alias
-    return false unless /\A(.*)([a-z0-9а-я]+)\.([a-zа-я]{2,})(\/.*)?\z/i =~ original_link
-      self.original_link = add_http_protocol(original_link)    
-      self.alias_link = create_alias_link
+  def add_Protocol_Alias
+    self.original_link = add_http_protocol(original_link)
+    self.alias_link = create_alias_link
+    update_destroy_date
   end
 
   def add_http_protocol(original_link)
@@ -25,20 +33,15 @@ class Link < ActiveRecord::Base
     alias_url = ""
     
     while alias_url.empty?
-      alias_url = array_with_symbols.sample(5).join
-      alias_url = "" if this_alias_link_exists?(alias_url)
+      new_alias = take_new_alias
+      Link.exists?(:alias_link => "#{new_alias}") ? alias_url = "" : alias_url = new_alias
     end
 
-    alias_url 
+    alias_url
   end
 
-  def array_with_symbols
-    ('A'..'Z').to_a + ('a'..'z').to_a + (0..9).to_a.map(&:to_s)
-  end
-
-  def this_alias_link_exists?(alias_link)
-    arr = /\A([a-zA-Z0-9]{5})\z/.match alias_link
-    Link.exists?(:alias_link => "#{arr[1]}")
+  def take_new_alias
+    (('A'..'Z').to_a + ('a'..'z').to_a + (0..9).to_a.map(&:to_s)).sample(5).join
   end
 
 end

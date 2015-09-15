@@ -4,3 +4,8 @@
 require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
+
+task :delete_obsolete_links do
+  Link.where("destroy_at > ?", Time.now).delete_all
+  p 'Ссылки удалены :)'
+end
