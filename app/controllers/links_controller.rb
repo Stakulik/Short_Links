@@ -3,7 +3,7 @@ class LinksController < ApplicationController
   def create
     @link = Link.new(link_params)
 
-    if @link.valid_url? && @link.save
+    if @link.save
       flash[:success] = "#{request.host}/#{@link.alias_link}"
       redirect_to root_path
     else

@@ -2,7 +2,7 @@ class Link < ActiveRecord::Base
   validates :original_link, presence: true
   validates :alias_link, uniqueness: true
 
-  before_create :add_Protocol_Alias
+  before_validation :add_Protocol_Alias
 
   def valid_url?
     /\A(.*)([a-z0-9а-я]+)\.([a-zа-я]{2,})(\/.*)?\z/i =~ original_link
@@ -15,6 +15,8 @@ class Link < ActiveRecord::Base
   private
 
   def add_Protocol_Alias
+    return self.original_link = nil unless valid_url?
+    
     self.original_link = add_http_protocol(original_link)
     self.alias_link = create_alias_link
     update_destroy_date

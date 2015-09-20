@@ -2,36 +2,43 @@ require 'rails_helper'
 
 describe LinksController, :type => :controller do
   
-  describe 'POST create' do
-    it "creates new link" do
-      expect{ post :create, link: { original_link: "http://railscasts.com/episodes/275-how-i-test" } }.to change(Link, :count).by(1)
+  context 'POST create' do
+
+    it "redirects to '/' when a new link is saved" do
+      post :create, link: attributes_for(:link, original_link: "http://railscasts.com/episodes/")
+      expect(response).to redirect_to(root_path)
     end
 
-    it 'sends a wrong parameter: original_link = nil' do
-      expect{ post :create, link: { original_link: nil } }.to_not change(Link, :count)
+    it "renders a 'main' template when a new link has a wrong parameter (original_link = nil)" do
+      post :create, link: attributes_for(:link, original_link: nil)
+      expect(response).to render_template(:main)
     end
 
-    it 'sends a wrong parameter: original_link = "olololo"' do
-      expect{ post :create, link: { original_link: nil } }.to_not change(Link, :count)
+    it "renders a 'main' template when a new link has a wrong parameter (original_link = 'ololo')" do
+      post :create, link: attributes_for(:link, original_link: "ololo")
+      expect(response).to render_template(:main)
     end
 
   end
 
-  describe 'GET router' do
+  context 'GET router' do
+
     it "redirects to an original link" do
-      create(:link)
-
-      expect( get :router, :alias_link => "YANDX" ).to redirect_to("http://www.yandex.ru/")
+      link = create(:link)
+      get :router, attributes_for(:link, alias_link: link.alias_link)
+      expect(response).to redirect_to("http://www.yandex.ru/")
     end
 
-    it "shows 'Данная ссылка не существует' while a required alias_link does not exist and has length = 5 symbols" do
-      expect( get :router, :alias_link => "DDDDD" ).to redirect_to root_path 
+    it "redirects to a root path while a required alias_link does not exist, but has length = 5 symbols" do
+      get :router, attributes_for(:link, alias_link: "DDDDD") 
+      expect(response).to redirect_to root_path 
     end
 
-    it "redirects to a root_path while a required alias_link does not exist and alias_link.length != 5 symbols" do
-      expect( get :router, :alias_link => "ok").to redirect_to root_path
+    it "redirects to a root path while a required alias_link has length != 5 symbols" do
+      get :router, attributes_for(:link, alias_link: "ok")
+      expect(response).to redirect_to root_path
     end
+
   end
 
 end
-

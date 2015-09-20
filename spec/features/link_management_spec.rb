@@ -23,7 +23,7 @@ describe "Link management", :type => :feature do
   scenario "[FIX]User is redirected to an original link when required an alias link" do
     create(:link)
 
-    visit 'YANDX'
+    visit '/YANDX'
     # expect(current_path).to eq 'http://www.yandex.ru/'
   end
 
@@ -38,6 +38,7 @@ describe "Link management", :type => :feature do
     visit '/DDD4'
 
     expect(current_path).to eq '/'
+    expect(page).to have_text("На этой странице Вы можете")
   end
 
 end
