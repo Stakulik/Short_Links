@@ -13,7 +13,7 @@ describe Link, type: :model do
     it "original_link == simple string" do
       link = build(:link, original_link: 'aaa')
       link.valid?
-      expect(link.errors[:original_link]).to include("can't be blank")
+      expect(link.errors[:alias_link]).to include("can't be blank")
     end
 
   end

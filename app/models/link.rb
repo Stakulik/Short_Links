@@ -1,8 +1,8 @@
 class Link < ActiveRecord::Base
-  validates :original_link, presence: true
+  validates :original_link, :alias_link, presence: true
   validates :alias_link, uniqueness: true
 
-  before_validation :add_Protocol_Alias
+  before_validation :add_Protocol_Alias, if: :new_record?
 
   def valid_url?
     /\A(.*)([a-z0-9а-я]+)\.([a-zа-я]{2,})(\/.*)?\z/i =~ original_link
@@ -15,20 +15,18 @@ class Link < ActiveRecord::Base
   private
 
   def add_Protocol_Alias
-    return self.original_link = nil unless valid_url?
-    
-    self.original_link = add_http_protocol(original_link)
-    self.alias_link = create_alias_link
-    update_destroy_date
+    if valid_url?
+      add_http_protocol
+      create_alias_link
+      update_destroy_date
+    end
   end
 
-  def add_http_protocol(original_link)
+  def add_http_protocol
     protocols = %w[http https ftp]
 
-    arr = /\A((https?|ftp)\:\/\/)?(.+)\.([а-яa-z]{2,})\/?(.*)\z/i.match original_link
-    original_link.insert(0, 'http://') unless protocols.index(arr[2])
-
-    original_link
+    arr = /\A((https?|ftp)\:\/\/)?(.+)\.([а-яa-z]{2,})\/?(.*)\z/i.match self.original_link
+    self.original_link.insert(0, 'http://') unless protocols.index(arr[2])
   end
 
   def create_alias_link
@@ -39,7 +37,7 @@ class Link < ActiveRecord::Base
       Link.exists?(:alias_link => "#{new_alias}") ? alias_url = "" : alias_url = new_alias
     end
 
-    alias_url
+    self.alias_link = alias_url
   end
 
   def take_new_alias
