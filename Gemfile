@@ -40,6 +40,8 @@ gem 'spring',        group: :development
 
 gem 'haml-rails', '0.9.0'
 gem 'bootstrap-sass', '~> 3.3.5'
+gem 'whenever', :require => false
+
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.3.3'
